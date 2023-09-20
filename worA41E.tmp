@@ -1,0 +1,79 @@
+[gd_scene load_steps=5 format=3 uid="uid://dl44clkw2hucb"]
+
+[ext_resource type="Texture2D" uid="uid://c05d5n1y1yjpt" path="res://mapSquare.png" id="1_c1vqw"]
+[ext_resource type="Script" path="res://world.gd" id="1_xancu"]
+[ext_resource type="PackedScene" uid="uid://bgcsq1xdk5h5f" path="res://player.tscn" id="2_ouuyp"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_efxdm"]
+size = Vector2(31.1127, 31.1127)
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_xancu")
+
+[node name="Point0" type="StaticBody2D" parent="."]
+position = Vector2(0, 82)
+rotation = 0.785398
+scale = Vector2(0.5, 0.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Point0"]
+position = Vector2(1.52588e-05, 1.52588e-05)
+shape = SubResource("RectangleShape2D_efxdm")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Point0"]
+texture = ExtResource("1_c1vqw")
+metadata/_edit_lock_ = true
+
+[node name="Point1" type="StaticBody2D" parent="."]
+rotation = 0.785398
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Point1"]
+shape = SubResource("RectangleShape2D_efxdm")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Point1"]
+texture = ExtResource("1_c1vqw")
+metadata/_edit_lock_ = true
+
+[node name="Point2" type="StaticBody2D" parent="."]
+position = Vector2(71, 83)
+rotation = 0.785398
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Point2"]
+shape = SubResource("RectangleShape2D_efxdm")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Point2"]
+texture = ExtResource("1_c1vqw")
+metadata/_edit_lock_ = true
+
+[node name="Point3" type="StaticBody2D" parent="."]
+position = Vector2(0, 158)
+rotation = 0.785398
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Point3"]
+shape = SubResource("RectangleShape2D_efxdm")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Point3"]
+texture = ExtResource("1_c1vqw")
+metadata/_edit_lock_ = true
+
+[node name="Point4" type="StaticBody2D" parent="."]
+position = Vector2(-79, 82)
+rotation = 0.785398
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Point4"]
+shape = SubResource("RectangleShape2D_efxdm")
+metadata/_edit_lock_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="Point4"]
+texture = ExtResource("1_c1vqw")
+metadata/_edit_lock_ = true
+
+[node name="Player" parent="." instance=ExtResource("2_ouuyp")]
+position = Vector2(0, 82)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+offset = Vector2(0, 82)
+zoom = Vector2(1.5, 1.5)

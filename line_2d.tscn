@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bl6453vu14swa"]
+
+[node name="Line2D" type="Line2D"]
+modulate = Color(0.909804, 1, 1, 1)
+z_index = -10
