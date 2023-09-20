@@ -7,6 +7,7 @@ var pointpositions=[]
 var lineconnections={}
 var line_fill_obj_list=[]
 var checkedlines=[]
+var checkedlines_new=[]
 var lines_pairs=[["12","01","02"],["23","02","03"],["34","03","04"],["41","04","01"]]
 
 const linefill_decayTimerMax=4
@@ -111,13 +112,15 @@ func finish_diamond():
 		var tweenScale=get_tree().create_tween()
 		tweenScale.tween_property(linefill,"scale",Vector2(1,1),0.025)
 		tweenScale.tween_property(linefill,"scale",Vector2(0,0),0.05)
-	Game.score+=Game.scoreForDiamond*Game.scoreMultiplier
+	Game.add_score(Game.scoreForDiamond)
 
 func check_line(lineid):
 #	checkedlines=[]
 #	for item in line_fill_obj_list:
 #		checkedlines.append(item.pairing)
-		
+	
+	if(lineid in checkedlines and lineid not in checkedlines_new):
+		checkedlines_new.append(lineid)
 	if(lineid not in checkedlines):
 		var tweenColor=get_tree().create_tween()
 		tweenColor.tween_property(lineconnections[lineid],"default_color",Color(0.0,0.5,0.5),0.05)
@@ -127,7 +130,7 @@ func check_line(lineid):
 	print(checkedlines)
 	for i in range(lines_pairs.size()):
 		var pair=lines_pairs[i]
-		if pairoflines_exists(pair):
+		if pairoflines_exists(pair,checkedlines):
 			if(line_fill_obj_list[i].checked==false):
 				line_fill_obj_list[i].set_checked()
 				var tweenScale=get_tree().create_tween()
@@ -136,29 +139,38 @@ func check_line(lineid):
 				print(line_fill_obj_list[i].scale)
 #			else:##We need to make it refresh the timer someplace else
 #				line_fill_obj_list[i].decayTimer=linefill_decayTimerMax
+		if pairoflines_exists(pair,checkedlines_new):
+			line_fill_obj_list[i].decayTimer=linefill_decayTimerMax
+			for element in pair:
+				checkedlines_new.erase(element)
 
+func uncheck_line_fill(lineid,fillobj):
+	if(not checkifline_isonactivefill(lineid,fillobj)):
+		uncheck_line(lineid)
+		
 func uncheck_line(lineid):
 	if(lineid in checkedlines):
 		var tweenColor=get_tree().create_tween()
 		tweenColor.tween_property(lineconnections[lineid],"default_color",Color(0.6,0.6,0.6),0.05)
 		tweenColor.tween_property(lineconnections[lineid],"default_color",Color(1,1,1),0.05)
 		checkedlines.erase(lineid)
+		checkedlines_new.erase(lineid)
 		print(str(lineid)+" removed")
 
-func pairoflines_exists(pair)->bool:
+func pairoflines_exists(pair,list=checkedlines)->bool:
 	for item in line_fill_obj_list:
 		var found = true
 		for element in pair:
-			if element not in checkedlines:
+			if element not in list:
 				found = false
 				break
 		if found:
 			return true
 	return false
-#func pairoflines_exists(pair, list)->bool:
-#	for item in list:
-#		var sorted_pair = pair.duplicate().sort()
-#		var sorted_item = item.duplicate().sort()
-#		if sorted_pair == sorted_item:
-#			return true
-#	return false
+	
+func checkifline_isonactivefill(lineid,fillobj):
+	var other_fills_list=line_fill_obj_list.duplicate()
+	other_fills_list.erase(fillobj)
+	for item in other_fills_list:
+		if lineid in item.pairing and item.checked:
+			return true

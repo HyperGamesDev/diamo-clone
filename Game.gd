@@ -8,6 +8,7 @@ var highscore:int=0
 
 var scoreMultiplier:int=1
 const scoreForDiamond:int=5
+const scoreCollectable:int=1
 const scoreMultiplierMax:int=5
 var scoreMultiplierTimer:float=0
 const scoreMultiplierMaxTimer:float=20
@@ -47,3 +48,8 @@ func decay_multiplier(delta):
 			scoreMultiplierTimer-=scoreMultiplierDecaySpeed*delta
 			if(scoreMultiplier==scoreMultiplierMax):
 				scoreMultiplier-=1
+
+func add_score(amnt):
+	amnt*=scoreMultiplier
+	score+=amnt
+	UI_node.score_popup(amnt)

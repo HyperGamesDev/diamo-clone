@@ -3,3 +3,4 @@
 [node name="Line" type="Line2D"]
 modulate = Color(0.909804, 1, 1, 1)
 z_index = -10
+width = 7.0

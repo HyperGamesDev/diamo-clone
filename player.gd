@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Area2D
 
 const SPEED = 2
 const SPEED_HOLD = 3.5
@@ -18,44 +18,15 @@ func _ready():
 func _process(delta):
 	if !moving:
 		lastpos_id=currentpos_id
-		match (currentpos_id):
-			0:
-				if(Input.is_action_pressed("up")):
-					change_posid(1)
-				elif(Input.is_action_pressed("right")):
-					change_posid(2)
-				elif(Input.is_action_pressed("down")):
-					change_posid(3)
-				elif(Input.is_action_pressed("left")):
-					change_posid(4)
-			1:
-				if(Input.is_action_pressed("right")):
-					change_posid(2)
-				elif(Input.is_action_pressed("down")):
-					change_posid(0)
-				elif(Input.is_action_pressed("left")):
-					change_posid(4)
-			2:
-				if(Input.is_action_pressed("up")):
-					change_posid(1)
-				elif(Input.is_action_pressed("down")):
-					change_posid(3)
-				elif(Input.is_action_pressed("left")):
-					change_posid(0)
-			3:
-				if(Input.is_action_pressed("up")):
-					change_posid(0)
-				elif(Input.is_action_pressed("right")):
-					change_posid(2)
-				elif(Input.is_action_pressed("left")):
-					change_posid(4)
-			4:
-				if(Input.is_action_pressed("up")):
-					change_posid(1)
-				elif(Input.is_action_pressed("right")):
-					change_posid(0)
-				elif(Input.is_action_pressed("down")):
-					change_posid(3)
+		if(Input.is_action_pressed("up")):
+			move_up()
+		elif(Input.is_action_pressed("right")):
+			move_right()
+		elif(Input.is_action_pressed("down")):
+			move_down()
+		elif(Input.is_action_pressed("left")):
+			move_left()
+			
 	if moving:
 		if(any_button_pressed()):
 			speedcur=SPEED_HOLD
@@ -68,7 +39,51 @@ func _process(delta):
 	else:
 		rotation=45
 		Game.decay_multiplier(delta)
-		
+
+func move_up():
+	match (currentpos_id):
+		0:
+			change_posid(1)
+		2:
+			change_posid(1)
+		3:
+			change_posid(0)
+		4:
+			change_posid(1)
+			
+func move_right():
+	match (currentpos_id):
+		0:
+			change_posid(2)
+		1:
+			change_posid(2)
+		3:
+			change_posid(2)
+		4:
+			change_posid(0)
+			
+func move_down():
+	match (currentpos_id):
+		0:
+			change_posid(3)
+		1:
+			change_posid(0)
+		2:
+			change_posid(3)
+		4:
+			change_posid(3)
+			
+func move_left():
+	match (currentpos_id):
+		0:
+			change_posid(4)
+		1:
+			change_posid(4)
+		2:
+			change_posid(0)
+		3:
+			change_posid(4)
+
 func any_button_pressed():
 	return (Input.is_action_pressed("up") or Input.is_action_pressed("right") or Input.is_action_pressed("down") or Input.is_action_pressed("left"))
 

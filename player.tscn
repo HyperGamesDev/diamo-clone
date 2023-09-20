@@ -6,16 +6,15 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q5006"]
 size = Vector2(30.46, 30.46)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="Area2D"]
 rotation = 0.785398
 scale = Vector2(0.4, 0.4)
+collision_mask = 2
 script = ExtResource("1_5id07")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-1.55619e-06, -1.55619e-06)
 shape = SubResource("RectangleShape2D_q5006")
-metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_dtihv")
-metadata/_edit_lock_ = true

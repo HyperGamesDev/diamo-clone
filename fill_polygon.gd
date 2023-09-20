@@ -23,7 +23,7 @@ func _process(delta):
 	scale=Vector2(size,size)
 	if(decayTimer<=0 and checked):
 		for lineid in pairing:
-			Game.World_node.uncheck_line(lineid)
+			Game.World_node.uncheck_line_fill(lineid,self)
 		checked=false
 
 func set_checked():
