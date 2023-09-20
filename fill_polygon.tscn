@@ -1,7 +1,10 @@
-[gd_scene format=3 uid="uid://dueo1j384s7nl"]
+[gd_scene load_steps=2 format=3 uid="uid://dueo1j384s7nl"]
+
+[ext_resource type="Script" path="res://fill_polygon.gd" id="1_wh5j0"]
 
 [node name="FillPolygon" type="Node2D"]
 position = Vector2(-7.62939e-06, -3.8147e-06)
+script = ExtResource("1_wh5j0")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 z_index = -15

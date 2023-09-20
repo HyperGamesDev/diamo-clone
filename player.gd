@@ -62,6 +62,7 @@ func _process(delta):
 		else:
 			speedcur=SPEED
 		
+		rotate(speedcur*5*360*delta)
 		tweenPos.set_speed_scale(speedcur)
 		Game.progress_multiplier(delta,speedcur)
 	else:

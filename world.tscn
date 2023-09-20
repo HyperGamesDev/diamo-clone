@@ -39,7 +39,7 @@ texture = ExtResource("1_c1vqw")
 metadata/_edit_lock_ = true
 
 [node name="Point2" type="StaticBody2D" parent="."]
-position = Vector2(120, 0)
+position = Vector2(170, 0)
 rotation = 0.785398
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Point2"]
@@ -51,7 +51,7 @@ texture = ExtResource("1_c1vqw")
 metadata/_edit_lock_ = true
 
 [node name="Point3" type="StaticBody2D" parent="."]
-position = Vector2(0, 101)
+position = Vector2(0, 100)
 rotation = 0.785398
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Point3"]
@@ -63,7 +63,7 @@ texture = ExtResource("1_c1vqw")
 metadata/_edit_lock_ = true
 
 [node name="Point4" type="StaticBody2D" parent="."]
-position = Vector2(-120, 0)
+position = Vector2(-170, 0)
 rotation = 0.785398
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Point4"]

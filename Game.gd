@@ -7,6 +7,7 @@ var score:int=0
 var highscore:int=0
 
 var scoreMultiplier:int=1
+const scoreForDiamond:int=5
 const scoreMultiplierMax:int=5
 var scoreMultiplierTimer:float=0
 const scoreMultiplierMaxTimer:float=20
