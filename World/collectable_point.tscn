@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://vhtjc3atywt5"]
+
+[ext_resource type="Texture2D" uid="uid://bvprax7b1jgi0" path="res://World/collectable.png" id="1_adikb"]
+[ext_resource type="Script" path="res://World/collectable_point.gd" id="1_jc11x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wifeq"]
+size = Vector2(30, 32.5)
+
+[node name="CollectablePoint" type="Area2D"]
+scale = Vector2(0.4, 0.4)
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_jc11x")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.63913e-06, -1.25)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_wifeq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_adikb")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

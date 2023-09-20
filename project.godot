@@ -10,14 +10,18 @@ config_version=5
 
 [application]
 
-config/name="Diamo Clone"
-run/main_scene="res://world.tscn"
+config/name="diamo-clone"
+run/main_scene="res://World/world.tscn"
 config/features=PackedStringArray("4.1", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://World/mapSquare.png"
 
 [autoload]
 
-Game="*res://Game.gd"
+Game="*res://Global/Game.gd"
+
+[display]
+
+window/stretch/mode="viewport"
 
 [input]
 
@@ -50,6 +54,7 @@ left={
 
 2d_physics/layer_1="Player"
 2d_physics/layer_2="Collectables"
+2d_physics/layer_3="Enemies"
 
 [rendering]
 
