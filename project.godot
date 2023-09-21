@@ -18,6 +18,7 @@ config/icon="res://World/mapSquare.png"
 [autoload]
 
 Game="*res://Global/Game.gd"
+Utils="*res://Global/Utils.gd"
 
 [display]
 

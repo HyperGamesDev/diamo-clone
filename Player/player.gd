@@ -1,13 +1,16 @@
 extends Area2D
 
 const SPEED = 1.5
-const SPEED_HOLD = 3
+const SPEED_CHECKED_LINE_MULT = 1.1
+const SPEED_HOLD_MULT = 2
 
 var speedcur=SPEED
 var currentpos_id=0
 var lastpos_id=0
 var new_pos=position
 var moving=false
+var current_action=""
+var movedFromLastDist=0
 
 @onready var tweenPos: Tween=get_tree().create_tween()
 
@@ -24,19 +27,19 @@ func _process(delta):
 			move_left()
 			
 	if moving:
-		if(any_button_pressed()):
-			speedcur=SPEED_HOLD
-		else:
-			speedcur=SPEED
+		speedcur=calculate_speed()
+		movedFromLastDist=Game.World_node.pointpositions[lastpos_id].distance_to(position)
 		
 		rotate(deg_to_rad(speedcur*360*delta*1))
 		tweenPos.set_speed_scale(speedcur)
 		Game.progress_multiplier(delta,speedcur)
 	else:
 		rotation=deg_to_rad(45)
+		movedFromLastDist=0
 		Game.decay_multiplier(delta)
 
 func move_up():
+	current_action="up"
 	match (currentpos_id):
 		0:
 			change_posid(1)
@@ -48,6 +51,7 @@ func move_up():
 			change_posid(1)
 			
 func move_right():
+	current_action="right"
 	match (currentpos_id):
 		0:
 			change_posid(2)
@@ -59,6 +63,7 @@ func move_right():
 			change_posid(0)
 			
 func move_down():
+	current_action="down"
 	match (currentpos_id):
 		0:
 			change_posid(3)
@@ -70,6 +75,7 @@ func move_down():
 			change_posid(3)
 			
 func move_left():
+	current_action="left"
 	match (currentpos_id):
 		0:
 			change_posid(4)
@@ -80,7 +86,7 @@ func move_left():
 		3:
 			change_posid(4)
 
-func any_button_pressed():
+func any_button_pressed()->bool:
 	return (Input.is_action_pressed("up") or Input.is_action_pressed("right") or Input.is_action_pressed("down") or Input.is_action_pressed("left"))
 
 func change_posid(id):
@@ -93,10 +99,37 @@ func change_posid(id):
 	tweenPos.tween_property(self,"position",new_pos,2)
 	tweenPos.tween_callback(fill_line)
 
+func calculate_speed()->float:
+	var speedMult=1
+	if(Input.is_action_pressed(current_action)):
+		speedMult*=SPEED_HOLD_MULT
+	if(is_on_checked_line()):
+		speedMult*=SPEED_CHECKED_LINE_MULT
+	
+	#print(SPEED*speedMult)
+	return SPEED*speedMult
+
 func fill_line():
+	var lineid=get_current_lineid()
+	Game.World_node.check_line(lineid)
+	moving=false
+
+func is_on_checked_line()->bool:
+	var lineid=get_current_lineid()
+	return (lineid in Game.World_node.checkedlines)
+
+func get_current_lineid()->String:
 	var lineid=str(lastpos_id)+str(currentpos_id)
 	if(!Game.World_node.lineconnections.has(lineid)):
-		lineid=str(currentpos_id)+str(lastpos_id)## Reverse the string
-	Game.World_node.check_line(lineid)
-	rotation=45
-	moving=false
+		lineid=str(currentpos_id)+str(lastpos_id) ##Reverse the string
+	return lineid
+
+func die():
+	queue_free()
+
+func _on_tree_exiting():##Death
+	Game.game_over()
+	Game.Player_node=null
+	if(Game.score>Game.highscore):
+		Game.highscore=Game.score
+	Utils.save_game()

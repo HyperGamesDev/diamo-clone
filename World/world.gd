@@ -178,3 +178,7 @@ func checkifline_isonactivefill(lineid,fillobj):
 	for item in other_fills_list:
 		if lineid in item.pairing and item.checked:
 			return true
+
+
+func _on_tree_entered():
+	Game.reload()

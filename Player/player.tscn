@@ -18,3 +18,5 @@ shape = SubResource("RectangleShape2D_q5006")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_dtihv")
+
+[connection signal="tree_exiting" from="." to="." method="_on_tree_exiting"]

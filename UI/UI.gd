@@ -7,6 +7,8 @@ extends CanvasLayer
 func _ready():
 	get_node("MultiplierProgressBar").max_value=Game.scoreMultiplierMaxTimer*10
 	scorePopup.scale=Vector2.ZERO
+	$GameOverUI.visible=false
+	$GameOverUI/HighscoreTxt.text="Highscore: "+str(Game.highscore)
 
 
 func _process(delta):
@@ -36,3 +38,11 @@ func score_popup_new(amnt,pos=Vector2(0,0),size=1):
 	tweenScale.tween_property(scorePopupNew,"scale",Vector2(size,size),0.25)
 	tweenScale.tween_property(scorePopupNew,"scale",Vector2(0,0),0.15)
 	tweenScale.tween_callback(scorePopupNew.queue_free)
+
+
+func game_over():
+	$GameOverUI.visible=true
+	$GameOverUI/ScoreTxt.text="Score: "+str(Game.score)
+	
+func _on_restart_buton_pressed():
+	Game.restart()

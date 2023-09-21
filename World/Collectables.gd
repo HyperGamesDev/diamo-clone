@@ -5,7 +5,7 @@ extends Node2D
 var collectablePointInstance=null
 @onready var rng=RandomNumberGenerator.new()
 
-const collectablesTimerMinMax=Vector2(9,15)
+const collectablesTimerMinMax=Vector2(3,5)
 
 func _ready():
 	collectablePointInstance=collectablePoint.instantiate()

@@ -21,19 +21,17 @@ var enemiesInstances=[]
 
 #var camera_view_rect
 var boundary_rect
-const enemiesTimerMinMax=Vector2(7,9)
+#const enemiesTimerMinMax=Vector2(7,9)
+const enemiesTimerMinMax=Vector2(2,4)
 const DISTANCE_FROM_BOUNDARIES=20
 
 func _ready():
 	reset_timer()
-	var boundary_rect_area=Game.World_node.get_node("BoundaryRectArea")
+	var boundary_rect_area = Game.World_node.get_node("BoundaryRectArea")
 	var boundary_position = boundary_rect_area.global_position
 	var boundary_size = boundary_rect_area.get_node("CollisionShape2D").shape.extents * 2.0
 
 	boundary_rect = Rect2(boundary_position - boundary_size / 2, boundary_size)
-	print(boundary_rect)
-	#camera_view_rect=Game.World_node.get_node("Camera2D").rect
-	#camera_view_rect = Rect2(Game.World_node.get_node("Camera2D").rect_position, Game.World_node.get_node("Camera2D").rect_size)
 	
 func _process(delta):
 	for enemy in enemiesInstances:
@@ -44,12 +42,10 @@ func _on_enemies_timer_timeout():
 	var enemyChoices=enemyPrefabs.duplicate()
 	enemyChoices.shuffle()
 	var enemyPrefab=enemyChoices[0]["prefab"]
-#	var enemyChoice=enemyPrefabs.keys().duplicate().randomize()[0]
-#	var enemyPrefab=enemyChoice["prefab"]
 	
 	var enemyInstance=enemyPrefab.instantiate()
 	add_child(enemyInstance)
-	var point1=generate_random_enemy_position()#Vector2(rng.randi_range(-100,100),rng.randi_range(-100,100))
+	var point1=generate_random_enemy_position()
 	var point2=Game.World_node.pointpositions[0]
 	enemyInstance.position=point1
 	enemyInstance.point1=point1
