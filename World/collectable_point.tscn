@@ -4,16 +4,18 @@
 [ext_resource type="Script" path="res://World/collectable_point.gd" id="1_jc11x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wifeq"]
-size = Vector2(30, 32.5)
+size = Vector2(35, 35)
 
 [node name="CollectablePoint" type="Area2D"]
+process_priority = -1
+process_physics_priority = -1
 scale = Vector2(0.4, 0.4)
 collision_layer = 2
 collision_mask = 5
 script = ExtResource("1_jc11x")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1.63913e-06, -1.25)
+position = Vector2(-1.11759e-06, 3.20375e-06)
 scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_wifeq")
 

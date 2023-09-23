@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://b2cfa4g77r5rq"]
+
+[ext_resource type="Script" path="res://Enemies/enemy4.gd" id="1_erqam"]
+[ext_resource type="Texture2D" uid="uid://j1dydcro6b2a" path="res://Enemies/enemy4.png" id="2_ymr23"]
+[ext_resource type="Texture2D" uid="uid://o18ctq0737yf" path="res://Enemies/enemy4_inside.png" id="3_jfvlg"]
+[ext_resource type="PackedScene" uid="uid://vhtjc3atywt5" path="res://World/collectable_point.tscn" id="4_86itq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wapm3"]
+radius = 15.0
+
+[node name="Enemy4" type="Area2D"]
+scale = Vector2(0.6, 0.6)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_erqam")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.55619e-06, -1.55619e-06)
+shape = SubResource("CircleShape2D_wapm3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_ymr23")
+
+[node name="Sprite2D_Inside1" type="Sprite2D" parent="."]
+texture = ExtResource("3_jfvlg")
+
+[node name="Sprite2D_Inside2" type="Sprite2D" parent="."]
+rotation = 0.785398
+texture = ExtResource("3_jfvlg")
+
+[node name="CollectablePoint" parent="." instance=ExtResource("4_86itq")]
+z_index = 5
+scale = Vector2(0.55, 0.55)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]

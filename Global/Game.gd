@@ -32,8 +32,6 @@ func _process(delta):
 	
 	if(Input.is_key_pressed(KEY_R)):
 		restart()
-	if(Input.is_key_pressed(KEY_ESCAPE)):
-		get_tree().quit()
 	if(Input.is_key_pressed(KEY_F11)):
 		var current_mode = DisplayServer.window_get_mode()
 		if current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN:

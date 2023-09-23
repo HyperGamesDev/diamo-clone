@@ -126,8 +126,6 @@ func get_current_lineid()->String:
 
 func die():
 	queue_free()
-
-func _on_tree_exiting():##Death
 	Game.game_over()
 	Game.Player_node=null
 	if(Game.score>Game.highscore):

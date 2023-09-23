@@ -1,6 +1,6 @@
 extends Area2D
 
-var speed=30
+var speed=20
 
 var point1=Vector2(0,0)
 var point2=Vector2(0,0)
@@ -8,20 +8,25 @@ var point2=Vector2(0,0)
 var nearmissed=false
 var nearmissed_complete=false
 
+#const time_to_decay=5.0
+
 func _ready():
-	rotation=deg_to_rad(randi_range(0,360))
+	point2=Game.World_node.pointpositions[0]##The middle
+	var direction = (point2 - point1).normalized()
+	look_at(position+direction)
 
 func _process(delta):
 	var direction = (point2 - point1).normalized()
-	var extended_direction = direction * 5
-
-	position += extended_direction * speed * delta
+	
+	if position.distance_to(point2) > 2:
+		position += direction * speed * delta * 5
+	else:
+		if($DecayTimer.is_stopped()):
+			print("DecayTimer started")
+			$DecayTimer.start()
 	
 	if(abs(position.x)>500 or abs(position.y)>500):
 		self.queue_free()
-		
-	rotate(deg_to_rad(speed/10*360*delta*0.6))
-	
 	
 	if(Game.Player_node):
 		if(Game.Player_node.moving):##Check for nearmiss
@@ -38,7 +43,10 @@ func _process(delta):
 func _on_area_entered(area):
 	if(area.name=="Player"):
 		area.die()
-		self.die()
+		#self.die()
 
 func die():
 	self.queue_free()
+
+func _on_decaytimer_timeout():
+	self.die()

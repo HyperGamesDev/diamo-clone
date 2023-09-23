@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q5006"]
 size = Vector2(30.46, 30.46)
 
-[node name="Enemy1" type="Area2D"]
+[node name="Enemy3" type="Area2D"]
 rotation = 0.785398
 scale = Vector2(0.6, 0.6)
 collision_layer = 4

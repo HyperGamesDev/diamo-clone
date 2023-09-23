@@ -24,7 +24,7 @@ func _ready():
 	pointpositions.append($Points/Point4.position)
 	
 	var line_instance_01 = line_scene.instantiate()
-	line_instance_01.name="line_"+"01"
+	line_instance_01.name="Line_"+"01"
 	$Lines.add_child(line_instance_01)
 	lineconnections["01"]=(line_instance_01)
 	line_instance_01.add_point(pointpositions[0],0)
@@ -32,6 +32,7 @@ func _ready():
 	line_instance_01.default_color=lineColor
 	
 	var line_instance_02 = line_scene.instantiate()
+	line_instance_02.name="Line_"+"02"
 	$Lines.add_child(line_instance_02)
 	lineconnections["02"]=(line_instance_02)
 	line_instance_02.add_point(pointpositions[0],0)
@@ -39,6 +40,7 @@ func _ready():
 	line_instance_02.default_color=lineColor
 	
 	var line_instance_03 = line_scene.instantiate()
+	line_instance_03.name="Line_"+"03"
 	$Lines.add_child(line_instance_03)
 	lineconnections["03"]=(line_instance_03)
 	line_instance_03.add_point(pointpositions[0],0)
@@ -46,6 +48,7 @@ func _ready():
 	line_instance_03.default_color=lineColor
 	
 	var line_instance_04 = line_scene.instantiate()
+	line_instance_04.name="Line_"+"04"
 	$Lines.add_child(line_instance_04)
 	lineconnections["04"]=(line_instance_04)
 	line_instance_04.add_point(pointpositions[0],0)
@@ -54,6 +57,7 @@ func _ready():
 	
 	
 	var line_instance_12 = line_scene.instantiate()
+	line_instance_12.name="Line_"+"12"
 	$Lines.add_child(line_instance_12)
 	lineconnections["12"]=(line_instance_12)
 	line_instance_12.add_point(pointpositions[1],0)
@@ -61,6 +65,7 @@ func _ready():
 	line_instance_12.default_color=lineColor
 	
 	var line_instance_23 = line_scene.instantiate()
+	line_instance_23.name="Line_"+"23"
 	$Lines.add_child(line_instance_23)
 	lineconnections["23"]=(line_instance_23)
 	line_instance_23.add_point(pointpositions[2],0)
@@ -68,6 +73,7 @@ func _ready():
 	line_instance_23.default_color=lineColor
 	
 	var line_instance_34 = line_scene.instantiate()
+	line_instance_34.name="Line_"+"34"
 	$Lines.add_child(line_instance_34)
 	lineconnections["34"]=(line_instance_34)
 	line_instance_34.add_point(pointpositions[3],0)
@@ -75,6 +81,7 @@ func _ready():
 	line_instance_34.default_color=lineColor
 	
 	var line_instance_41 = line_scene.instantiate()
+	line_instance_41.name="Line_"+"41"
 	$Lines.add_child(line_instance_41)
 	lineconnections["41"]=(line_instance_41)
 	line_instance_41.add_point(pointpositions[4],0)
@@ -85,22 +92,26 @@ func _ready():
 	
 	
 	var fillpolygon_tr = fillpolygon_scene.instantiate()
+	fillpolygon_tr.name="FillPolygon_"+"tr"
 	var offset=fillpolygon_tr.get_child(0).offset
 	$FillPolygons.add_child(fillpolygon_tr)
 	fillpolygon_tr.setup(0,1,2)
 	line_fill_obj_list.append(fillpolygon_tr)
 	
 	var fillpolygon_br = fillpolygon_scene.instantiate()
+	fillpolygon_br.name="FillPolygon_"+"br"
 	$FillPolygons.add_child(fillpolygon_br)
 	fillpolygon_br.setup(0,2,3)
 	line_fill_obj_list.append(fillpolygon_br)
 	
 	var fillpolygon_bl = fillpolygon_scene.instantiate()
+	fillpolygon_bl.name="FillPolygon_"+"bl"
 	$FillPolygons.add_child(fillpolygon_bl)
 	fillpolygon_bl.setup(0,3,4)
 	line_fill_obj_list.append(fillpolygon_bl)
 	
 	var fillpolygon_tl = fillpolygon_scene.instantiate()
+	fillpolygon_tl.name="FillPolygon_"+"tl"
 	$FillPolygons.add_child(fillpolygon_tl)
 	fillpolygon_tl.setup(0,4,1)
 	line_fill_obj_list.append(fillpolygon_tl)

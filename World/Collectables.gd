@@ -29,6 +29,5 @@ func _on_collectables_timer_timeout():
 
 func reset_timer():
 	var rand_timer:float=rng.randi_range(collectablesTimerMinMax.x*10,collectablesTimerMinMax.y*10)/10.0
-	$CollectablesTimer.wait_time=rand_timer
-	$CollectablesTimer.start()
+	$CollectablesTimer.start(rand_timer)
 	#print($CollectablesTimer.wait_time)

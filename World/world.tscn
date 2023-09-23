@@ -27,6 +27,7 @@ font_names = PackedStringArray("Consolas")
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_thnpw")
+metadata/_edit_lock_ = true
 
 [node name="BG" type="Polygon2D" parent="."]
 z_index = -100
@@ -39,8 +40,10 @@ modulate = Color(1, 1, 1, 0.392157)
 z_index = -105
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_h6ejw")
+metadata/_edit_lock_ = true
 
 [node name="Points" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="Point0" type="StaticBody2D" parent="Points"]
 rotation = 0.785398
@@ -108,24 +111,31 @@ texture = ExtResource("2_nabvn")
 metadata/_edit_lock_ = true
 
 [node name="Lines" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="FillPolygons" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="Player" parent="." instance=ExtResource("3_cv4m1")]
+metadata/_edit_lock_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(0, -82)
 offset = Vector2(0, 82)
 zoom = Vector2(2, 2)
+metadata/_edit_lock_ = true
 
 [node name="BoundaryRectArea" type="Area2D" parent="."]
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BoundaryRectArea"]
 shape = SubResource("RectangleShape2D_krarw")
 debug_color = Color(1, 1, 1, 0.0392157)
+metadata/_edit_lock_ = true
 
 [node name="Collectables" type="Node2D" parent="."]
 script = ExtResource("4_wheeu")
+metadata/_edit_lock_ = true
 
 [node name="CollectablesTimer" type="Timer" parent="Collectables"]
 wait_time = 4.0
@@ -133,12 +143,14 @@ one_shot = true
 
 [node name="Enemies" type="Node2D" parent="."]
 script = ExtResource("5_y5xdu")
+metadata/_edit_lock_ = true
 
 [node name="EnemiesTimer" type="Timer" parent="Enemies"]
 wait_time = 4.0
 one_shot = true
 
 [node name="UI" type="CanvasLayer" parent="."]
+process_mode = 3
 script = ExtResource("5_r61hf")
 
 [node name="MultiplierProgressBar" type="TextureProgressBar" parent="UI"]
@@ -183,16 +195,19 @@ theme_override_font_sizes/font_size = 31
 text = "0"
 horizontal_alignment = 1
 
-[node name="ScorePopup" type="Label" parent="UI"]
+[node name="ScorePopups" type="Node2D" parent="UI"]
+metadata/_edit_lock_ = true
+
+[node name="ScorePopup" type="Label" parent="UI/ScorePopups"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -81.0
-offset_top = -104.0
-offset_right = 69.0
-offset_bottom = 46.0
+offset_left = 495.0
+offset_top = 220.0
+offset_right = 645.0
+offset_bottom = 370.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(75, 75)
@@ -206,13 +221,14 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GameOverUI" type="CanvasLayer" parent="UI"]
+process_mode = 3
 visible = false
 
 [node name="Panel" type="Panel" parent="UI/GameOverUI"]
 offset_right = 1152.0
 offset_bottom = 647.0
 
-[node name="GameOverTxt" type="Label" parent="UI/GameOverUI"]
+[node name="TitleTxt" type="Label" parent="UI/GameOverUI"]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -264,6 +280,7 @@ text = "Highscore: 0"
 horizontal_alignment = 1
 
 [node name="RestartButon" type="Button" parent="UI/GameOverUI"]
+process_mode = 3
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -280,7 +297,126 @@ pivot_offset = Vector2(36.215, 15.015)
 text = "RESTART"
 flat = true
 
+[node name="QuitButton" type="Button" parent="UI/GameOverUI"]
+process_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.0
+offset_top = -174.0
+offset_right = 38.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2.505, 2.505)
+pivot_offset = Vector2(36.215, 15.015)
+text = "QUIT"
+flat = true
+
+[node name="PauseUI" type="CanvasLayer" parent="UI"]
+process_mode = 3
+visible = false
+
+[node name="Panel" type="Panel" parent="UI/PauseUI"]
+offset_right = 1152.0
+offset_bottom = 647.0
+
+[node name="TitleTxt" type="Label" parent="UI/PauseUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -68.0
+offset_top = -131.5
+offset_right = 68.0
+offset_bottom = -77.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_xnk6g")
+theme_override_font_sizes/font_size = 50
+text = "Pause"
+horizontal_alignment = 1
+
+[node name="HighscoreTxt" type="Label" parent="UI/PauseUI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = -231.71
+offset_right = 102.0
+offset_bottom = -184.71
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("SystemFont_xnk6g")
+theme_override_font_sizes/font_size = 31
+text = "Highscore: 0"
+horizontal_alignment = 1
+
+[node name="ResumeButton" type="Button" parent="UI/PauseUI"]
+process_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.0
+offset_top = -340.0
+offset_right = 38.0
+offset_bottom = -309.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2.505, 2.505)
+pivot_offset = Vector2(36.215, 15.015)
+text = "RESUME"
+flat = true
+
+[node name="RestartButon" type="Button" parent="UI/PauseUI"]
+process_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -35.0
+offset_top = -251.0
+offset_right = 40.0
+offset_bottom = -220.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2.505, 2.505)
+pivot_offset = Vector2(36.215, 15.015)
+text = "RESTART"
+flat = true
+
+[node name="QuitButton" type="Button" parent="UI/PauseUI"]
+process_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -37.0
+offset_top = -174.0
+offset_right = 38.0
+offset_bottom = -143.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2.505, 2.505)
+pivot_offset = Vector2(36.215, 15.015)
+text = "QUIT"
+flat = true
+
 [connection signal="tree_entered" from="." to="." method="_on_tree_entered"]
 [connection signal="timeout" from="Collectables/CollectablesTimer" to="Collectables" method="_on_collectables_timer_timeout"]
 [connection signal="timeout" from="Enemies/EnemiesTimer" to="Enemies" method="_on_enemies_timer_timeout"]
 [connection signal="pressed" from="UI/GameOverUI/RestartButon" to="UI" method="_on_restart_buton_pressed"]
+[connection signal="pressed" from="UI/GameOverUI/QuitButton" to="UI" method="_on_quit_button_pressed"]
+[connection signal="pressed" from="UI/PauseUI/ResumeButton" to="UI" method="_on_resume_button_pressed"]
+[connection signal="pressed" from="UI/PauseUI/RestartButon" to="UI" method="_on_restart_buton_pressed"]
+[connection signal="pressed" from="UI/PauseUI/QuitButton" to="UI" method="_on_quit_button_pressed"]
