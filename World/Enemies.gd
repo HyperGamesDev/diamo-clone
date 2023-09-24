@@ -27,6 +27,12 @@ extends Node2D
 		"point_req":60,
 	},
 	{
+		"prefab":preload("res://Enemies/enemy5.tscn"),
+		"speed":14,
+		"point_aligned":false,
+		"point_req":80,
+	},
+	{
 		"prefab":preload("res://Enemies/enemy6.tscn"),
 		"speed":20,
 		"point_aligned":false,
@@ -50,7 +56,7 @@ func _ready():
 
 	boundary_rect = Rect2(boundary_position - boundary_size / 2, boundary_size)
 	
-func _process(delta):
+func _process(_delta):
 	for enemy in enemiesInstances:
 		if(enemy==null):
 			enemiesInstances.erase(enemy)
@@ -66,12 +72,8 @@ func _on_enemies_timer_timeout():
 	var enemyChoice=enemyChoices[0]
 	
 	var enemyInstance=enemyChoice["prefab"].instantiate()
-	print(":")
-	print(enemyChoice["prefab"].resource_path)
-	print(enemyInstance.name)
 	add_child(enemyInstance)
 	enemyInstance.name=enemyChoice["prefab"].resource_path.split("Enemies/")[1].split("tscn")[0]
-	print(enemyInstance.name)
 	var point1=generate_random_enemy_position()
 	if(enemyChoice["point_aligned"]):
 		var point1id=generate_random_enemy4_pointid()
@@ -129,6 +131,7 @@ func generate_random_enemy4_position(pointid) -> Vector2:
 	return enemy_position
 
 func reset_timer():
+	@warning_ignore("narrowing_conversion")
 	var rand_timer:float=rng.randi_range(enemiesTimerMinMax.x*10,enemiesTimerMinMax.y*10)/10.0
+	$EnemiesTimer.stop()
 	$EnemiesTimer.start(rand_timer)
-	#print($EnemiesTimer.wait_time)

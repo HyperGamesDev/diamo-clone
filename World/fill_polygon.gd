@@ -1,8 +1,7 @@
 extends Node2D
 
 var pairing=["12","01","02"]
-var checked:bool=false
-@onready var decayTimer:float=0
+var filled:bool=false
 
 func _ready():
 	scale=Vector2(0,0)
@@ -19,19 +18,32 @@ func setup(point0,point1,point2):
 	get_child(0).polygon=[Game.World_node.pointpositions[point0]-offset,Game.World_node.pointpositions[point1]-offset,Game.World_node.pointpositions[point2]-offset]
 	
 func _process(delta):
-	if(decayTimer>0):
-		decayTimer-=Game.World_node.linefill_decaySpeed*delta
-	var size=decayTimer/Game.World_node.linefill_decayTimerMax
+	var size=clamp($DecayTimer.time_left/$DecayTimer.wait_time,0.0,1.0)
 	scale=Vector2(size,size)
-	if(decayTimer<=0 and checked):
+
+func set_filled():
+	if(!filled):
+		var tweenScale=get_tree().create_tween()
+		tweenScale.tween_property(self,"scale",Vector2(1,1),0.05)
+	$DecayTimer.wait_time=Game.World_node.linefill_decayTimerMax
+	$DecayTimer.start()
+	filled=true
+
+func reset_filled():
+	print("reset_filled() | "+str(pairing))
+	filled=false
+	$DecayTimer.stop()
+
+func finish_diamond_reset():
+	var tweenScale=get_tree().create_tween()
+	tweenScale.tween_property(self,"scale",Vector2(1,1),0.025)
+	tweenScale.tween_property(self,"scale",Vector2(0,0),0.05)
+	
+	filled=false
+	$DecayTimer.stop()
+
+func _on_decay_timer_timeout():
+	if(filled):
 		for lineid in pairing:
 			Game.World_node.uncheck_line_fill(lineid,self)
-		checked=false
-
-func set_checked():
-	checked=true
-	decayTimer=Game.World_node.linefill_decayTimerMax
-	
-func reset_checked():
-	checked=false
-	decayTimer=0
+		filled=false

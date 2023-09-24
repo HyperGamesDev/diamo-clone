@@ -21,7 +21,7 @@ var scoreMultiplierDecayDelay:float=0
 const scoreMultiplierDecayDelaySet:float=0.33
 
 func _ready():
-	Utils.load_game()
+	self.set_process_mode(PROCESS_MODE_ALWAYS)
 
 func _process(delta):
 	if(scoreMultiplierTimer>=scoreMultiplierMaxTimer and scoreMultiplier<scoreMultiplierMax):
@@ -30,8 +30,6 @@ func _process(delta):
 	if(scoreMultiplier==scoreMultiplierMax):
 		scoreMultiplierTimer=scoreMultiplierMaxTimer
 	
-	if(Input.is_key_pressed(KEY_R)):
-		restart()
 	if(Input.is_key_pressed(KEY_F11)):
 		var current_mode = DisplayServer.window_get_mode()
 		if current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
@@ -39,14 +37,7 @@ func _process(delta):
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 			
-	if(World_node==null and get_node("/root/World")!=null):
-		World_node=get_node("/root/World")
-	if(UI_node==null and get_node("/root/World/UI")!=null):
-		UI_node=get_node("/root/World/UI")
-	if(Player_node==null and get_node("/root/World/Player")!=null):
-		Player_node=get_node("/root/World/Player")
-
-	
+	reload_references()
 
 func progress_multiplier(delta,speed):
 	UI_node.multiplier_progressing()
@@ -94,7 +85,7 @@ func restart():
 	UI_node=null
 	get_tree().reload_current_scene()
 
-func reload():
+func reload_references():
 	if(World_node==null and get_node("/root/World")!=null):
 		World_node=get_node("/root/World")
 	if(UI_node==null and get_node("/root/World/UI")!=null):

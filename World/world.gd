@@ -10,8 +10,9 @@ var checkedlines=[]
 var checkedlines_new=[]
 var lines_pairs=[["12","01","02"],["23","02","03"],["34","03","04"],["41","04","01"]]
 
-const linefill_decayTimerMax=4
-const linefill_decaySpeed=0.4
+const linefill_decayTimerMax=10
+
+const line_enableTimerMax=8
 
 const lineColor=Color(0.4,0.4,0.4)
 const lineColorChecked=Color("1b9c95")
@@ -24,68 +25,52 @@ func _ready():
 	pointpositions.append($Points/Point4.position)
 	
 	var line_instance_01 = line_scene.instantiate()
-	line_instance_01.name="Line_"+"01"
 	$Lines.add_child(line_instance_01)
 	lineconnections["01"]=(line_instance_01)
-	line_instance_01.add_point(pointpositions[0],0)
-	line_instance_01.add_point(pointpositions[1],0)
+	line_instance_01.setup("01",pointpositions[0],pointpositions[1],false)
 	line_instance_01.default_color=lineColor
 	
 	var line_instance_02 = line_scene.instantiate()
-	line_instance_02.name="Line_"+"02"
 	$Lines.add_child(line_instance_02)
 	lineconnections["02"]=(line_instance_02)
-	line_instance_02.add_point(pointpositions[0],0)
-	line_instance_02.add_point(pointpositions[2],0)
+	line_instance_02.setup("02",pointpositions[0],pointpositions[2],false)
 	line_instance_02.default_color=lineColor
 	
 	var line_instance_03 = line_scene.instantiate()
-	line_instance_03.name="Line_"+"03"
 	$Lines.add_child(line_instance_03)
 	lineconnections["03"]=(line_instance_03)
-	line_instance_03.add_point(pointpositions[0],0)
-	line_instance_03.add_point(pointpositions[3],0)
+	line_instance_03.setup("03",pointpositions[0],pointpositions[3],false)
 	line_instance_03.default_color=lineColor
 	
 	var line_instance_04 = line_scene.instantiate()
-	line_instance_04.name="Line_"+"04"
 	$Lines.add_child(line_instance_04)
 	lineconnections["04"]=(line_instance_04)
-	line_instance_04.add_point(pointpositions[0],0)
-	line_instance_04.add_point(pointpositions[4],0)
+	line_instance_04.setup("04",pointpositions[0],pointpositions[4],false)
 	line_instance_04.default_color=lineColor
 	
 	
 	var line_instance_12 = line_scene.instantiate()
-	line_instance_12.name="Line_"+"12"
 	$Lines.add_child(line_instance_12)
 	lineconnections["12"]=(line_instance_12)
-	line_instance_12.add_point(pointpositions[1],0)
-	line_instance_12.add_point(pointpositions[2],0)
+	line_instance_12.setup("12",pointpositions[1],pointpositions[2])
 	line_instance_12.default_color=lineColor
 	
 	var line_instance_23 = line_scene.instantiate()
-	line_instance_23.name="Line_"+"23"
 	$Lines.add_child(line_instance_23)
 	lineconnections["23"]=(line_instance_23)
-	line_instance_23.add_point(pointpositions[2],0)
-	line_instance_23.add_point(pointpositions[3],0)
+	line_instance_23.setup("23",pointpositions[2],pointpositions[3])
 	line_instance_23.default_color=lineColor
 	
 	var line_instance_34 = line_scene.instantiate()
-	line_instance_34.name="Line_"+"34"
 	$Lines.add_child(line_instance_34)
 	lineconnections["34"]=(line_instance_34)
-	line_instance_34.add_point(pointpositions[3],0)
-	line_instance_34.add_point(pointpositions[4],0)
+	line_instance_34.setup("34",pointpositions[3],pointpositions[4])
 	line_instance_34.default_color=lineColor
 	
 	var line_instance_41 = line_scene.instantiate()
-	line_instance_41.name="Line_"+"41"
 	$Lines.add_child(line_instance_41)
 	lineconnections["41"]=(line_instance_41)
-	line_instance_41.add_point(pointpositions[4],0)
-	line_instance_41.add_point(pointpositions[1],0)
+	line_instance_41.setup("41",pointpositions[4],pointpositions[1])
 	line_instance_41.default_color=lineColor
 	
 	#print(lineconnections)
@@ -125,15 +110,10 @@ func _process(delta):
 		
 func finish_diamond():
 	for lineid in lineconnections:
-		var tweenColor=get_tree().create_tween()
-		tweenColor.tween_property(lineconnections[lineid],"default_color",Color("#2bbd97"),0.05)
-		tweenColor.tween_property(lineconnections[lineid],"default_color",lineColor,0.1)
+		lineconnections[lineid].finish_diamond_reset()
 	checkedlines.clear()
 	for linefill in line_fill_obj_list:
-		linefill.reset_checked()
-		var tweenScale=get_tree().create_tween()
-		tweenScale.tween_property(linefill,"scale",Vector2(1,1),0.025)
-		tweenScale.tween_property(linefill,"scale",Vector2(0,0),0.05)
+		linefill.finish_diamond_reset()
 	Game.add_score(Game.scoreForDiamond)
 	Game.score_popup(Game.scoreForDiamond)
 
@@ -141,36 +121,48 @@ func check_line(lineid):
 	if(lineid in checkedlines and lineid not in checkedlines_new):
 		checkedlines_new.append(lineid)
 	if(lineid not in checkedlines):
-		var tweenColor=get_tree().create_tween()
-		tweenColor.tween_property(lineconnections[lineid],"default_color",lineColorChecked,0.05)
+		lineconnections[lineid].set_checked()
 		checkedlines.append(lineid)
 	
-#	print()
-#	print(checkedlines)
 	for i in range(lines_pairs.size()):
 		var pair=lines_pairs[i]
 		if pairoflines_exists(pair,checkedlines):
-			if(line_fill_obj_list[i].checked==false):
-				line_fill_obj_list[i].set_checked()
-				var tweenScale=get_tree().create_tween()
-				tweenScale.tween_property(line_fill_obj_list[i],"scale",Vector2(1,1),0.05)
+			if(line_fill_obj_list[i].filled==false):
+				line_fill_obj_list[i].set_filled()
 		if pairoflines_exists(pair,checkedlines_new):
-			line_fill_obj_list[i].decayTimer=linefill_decayTimerMax
+			line_fill_obj_list[i].set_filled()##Reset timer
 			for element in pair:
 				checkedlines_new.erase(element)
+
+		
+func uncheck_line(lineid):
+	if(getlinefill_filled(lineid)!=null):
+		print()
+		print(lineid)
+		getlinefill_filled(lineid).reset_filled()
+				
+	if(lineid in checkedlines):
+		lineconnections[lineid].reset_checked()
+		checkedlines.erase(lineid)
+		checkedlines_new.erase(lineid)
+		
+#		if(checkifline_isonactivefill_any(lineid)):
+#			print(lineid+" in activefill")
+#			getlinefill_filled(lineid).reset_filled()
+#	for i in range(lines_pairs.size()):
+#		var pair=lines_pairs[i]
+#		if pairoflines_exists(pair,checkedlines):
+#			if(line_fill_obj_list[i].filled):
+#				line_fill_obj_list[i].reset_filled()
+#	for i in range(lines_pairs.size()):
+#		var pair=lines_pairs[i]
+#		if pairoflines_exists(pair,checkedlines):
+#			if(getlinefill_filled(lineid).filled):
+#				getlinefill_filled(lineid).reset_filled()
 
 func uncheck_line_fill(lineid,fillobj):
 	if(not checkifline_isonactivefill(lineid,fillobj)):
 		uncheck_line(lineid)
-		
-func uncheck_line(lineid):
-	if(lineid in checkedlines):
-		var tweenColor=get_tree().create_tween()
-		tweenColor.tween_property(lineconnections[lineid],"default_color",Color(0.6,0.6,0.6),0.05)
-		tweenColor.tween_property(lineconnections[lineid],"default_color",lineColor,0.05)
-		checkedlines.erase(lineid)
-		checkedlines_new.erase(lineid)
-		print(str(lineid)+" removed")
 
 func pairoflines_exists(pair,list=checkedlines)->bool:
 	for item in line_fill_obj_list:
@@ -187,9 +179,35 @@ func checkifline_isonactivefill(lineid,fillobj):
 	var other_fills_list=line_fill_obj_list.duplicate()
 	other_fills_list.erase(fillobj)
 	for item in other_fills_list:
-		if lineid in item.pairing and item.checked:
+		if lineid in item.pairing and item.filled:
+			return true
+			
+
+func checkifline_isonactivefill_any(lineid):
+	for item in line_fill_obj_list:
+		if lineid in item.pairing and item.filled:
 			return true
 
+func getlinefill_filled(lineid):
+	for item in line_fill_obj_list:
+		print(item.pairing)
+		print(item.filled)
+		if lineid in item.pairing and item.filled:
+			print("Matched pairing: "+str(item.pairing))
+			return item
+	
+	
+func get_lineid(id1,id2)->String:
+	var lineid:String=str(id1)+str(id2)
+	if(!lineconnections.has(lineid)):
+		lineid=str(id2)+str(id1) ##Reverse the string
+		if(lineconnections.has(lineid)):
+			return lineid
+		else:
+			print("Lineid not found with any combination of: "+lineid)
+			return ""
+	else:
+		return lineid
 
 func _on_tree_entered():
-	Game.reload()
+	Game.reload_references()

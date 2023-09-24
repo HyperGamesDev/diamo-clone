@@ -5,6 +5,8 @@ extends CanvasLayer
 @onready var scorePopup=$ScorePopups/ScorePopup
 
 func _ready():
+	self.set_process_mode(PROCESS_MODE_ALWAYS)
+	
 	$MultiplierProgressBar.max_value=Game.scoreMultiplierMaxTimer*10
 	scorePopup.scale=Vector2.ZERO
 	$GameOverUI.visible=false
@@ -31,7 +33,10 @@ func _process(delta):
 		if(Game.isgameover):
 			resume()
 			Game.restart()
-			
+	if(Input.is_key_pressed(KEY_R)):
+		if(get_tree().paused or Game.isgameover):
+			restart()
+
 
 func multiplier_progressing():
 	$MultiplierProgressBar.set_progress_texture(progressBarFill_spr)

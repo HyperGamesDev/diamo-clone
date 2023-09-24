@@ -1,6 +1,26 @@
-[gd_scene format=3 uid="uid://bl6453vu14swa"]
+[gd_scene load_steps=3 format=3 uid="uid://bl6453vu14swa"]
+
+[ext_resource type="Script" path="res://World/line.gd" id="1_hnebm"]
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_fiie3"]
+b = Vector2(0, -100)
 
 [node name="Line" type="Line2D"]
 modulate = Color(0.909804, 1, 1, 1)
 z_index = -10
+points = PackedVector2Array(0, 0, 0, -100)
 width = 7.0
+script = ExtResource("1_hnebm")
+
+[node name="EnableTimer" type="Timer" parent="."]
+wait_time = 8.0
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("SegmentShape2D_fiie3")
+
+[connection signal="timeout" from="EnableTimer" to="." method="_on_enable_timer_timeout"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

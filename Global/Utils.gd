@@ -3,6 +3,11 @@ extends Node
 
 const SAVE_PATH="res://savegame.json"
 
+func _ready():
+	self.set_process_mode(PROCESS_MODE_ALWAYS)
+	
+	load_game()
+
 func save_game():
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	var data={
