@@ -31,14 +31,16 @@ func switch_points():
 
 func _on_area_entered(area):
 	if(area.name=="Player"):
-		Game.add_score(Game.scoreCollectable)
-		Game.score_popup_new(Game.scoreCollectable,self.get_global_transform_with_canvas().origin,0.9)
-		if("enemy" not in get_parent().name.to_lower()):
+		if("enemy" not in get_parent().name.to_lower() and "bullet" not in area.name.to_lower()):
+			Game.add_score(Game.scoreCollectable,false)
+			Game.score_popup_new(Game.scoreCollectable,self.get_global_transform_with_canvas().origin,0.9,false)
 			hide_point()
 			reset_timer()
 		else:
+			Game.add_score(Game.scoreCollectableEnemy,false)
+			Game.score_popup_new(Game.scoreCollectableEnemy,self.get_global_transform_with_canvas().origin,0.9,false)
 			get_parent().die()
-	elif("enemy" in area.name.to_lower() and area!=get_parent()):
+	elif("enemy" in area.name.to_lower() or "bullet" in area.name.to_lower() and area!=get_parent()):
 		if("enemy" not in get_parent().name.to_lower()):
 			hide_point()
 			if(Game.World_node.get_node("Collectables")!=null):

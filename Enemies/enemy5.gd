@@ -15,9 +15,8 @@ func _ready():
 
 func _process(delta):
 	var direction = (point2 - point1).normalized()
-	var extended_direction = direction * 5
 
-	position += extended_direction * speed * delta
+	position += direction * speed * delta * 5
 	
 	if(abs(position.x)>500 or abs(position.y)>500):
 		self.queue_free()
@@ -37,7 +36,6 @@ func _process(delta):
 func _on_area_entered(area):
 	if(area.name=="Player"):
 		area.die()
-		#self.die()
 
 func die():
 	self.queue_free()

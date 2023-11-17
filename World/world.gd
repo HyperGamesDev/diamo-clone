@@ -145,20 +145,6 @@ func uncheck_line(lineid):
 		lineconnections[lineid].reset_checked()
 		checkedlines.erase(lineid)
 		checkedlines_new.erase(lineid)
-		
-#		if(checkifline_isonactivefill_any(lineid)):
-#			print(lineid+" in activefill")
-#			getlinefill_filled(lineid).reset_filled()
-#	for i in range(lines_pairs.size()):
-#		var pair=lines_pairs[i]
-#		if pairoflines_exists(pair,checkedlines):
-#			if(line_fill_obj_list[i].filled):
-#				line_fill_obj_list[i].reset_filled()
-#	for i in range(lines_pairs.size()):
-#		var pair=lines_pairs[i]
-#		if pairoflines_exists(pair,checkedlines):
-#			if(getlinefill_filled(lineid).filled):
-#				getlinefill_filled(lineid).reset_filled()
 
 func uncheck_line_fill(lineid,fillobj):
 	if(not checkifline_isonactivefill(lineid,fillobj)):
@@ -208,6 +194,18 @@ func get_lineid(id1,id2)->String:
 			return ""
 	else:
 		return lineid
+		
+func get_point_to_the_left(point)->int:
+	if(point<4):
+		return point+1
+	else:
+		return 1
+		
+func get_point_to_the_right(point)->int:
+	if(point>1):
+		return point-1
+	else:
+		return 4
 
 func _on_tree_entered():
 	Game.reload_references()

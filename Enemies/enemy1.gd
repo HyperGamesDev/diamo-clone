@@ -13,15 +13,11 @@ func _ready():
 
 func _process(delta):
 	var direction = (point2 - point1).normalized()
-	var extended_direction = direction * 5
 
-	position += extended_direction * speed * delta
+	position += direction * speed * delta * 5
 	
 	if(abs(position.x)>500 or abs(position.y)>500):
 		self.queue_free()
-		
-	rotate(deg_to_rad(speed/10*360*delta*0.6))
-	
 	
 	if(Game.Player_node):
 		if(Game.Player_node.moving):##Check for nearmiss
@@ -33,6 +29,8 @@ func _process(delta):
 				Game.score_popup_new(Game.scoreNearMiss,self.get_global_transform_with_canvas().origin,0.9)
 		else:
 			nearmissed=false
+			
+	rotate(deg_to_rad(speed/10*360*delta*0.6))
 
 
 func _on_area_entered(area):

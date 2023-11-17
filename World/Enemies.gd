@@ -5,41 +5,61 @@ extends Node2D
 	{
 		"prefab":preload("res://Enemies/enemy1.tscn"),
 		"speed":20,
-		"point_aligned":false,
-		"point_req":0,
+		"point1_aligned":false,
+		"nearest_point2":false,
+		"score_req":0,
+		"limit":0,
 	},
 	{
 		"prefab":preload("res://Enemies/enemy2.tscn"),
 		"speed":26,
-		"point_aligned":false,
-		"point_req":0,
+		"point1_aligned":false,
+		"nearest_point2":false,
+		"score_req":0,
+		"limit":0,
 	},
 	{
 		"prefab":preload("res://Enemies/enemy3.tscn"),
 		"speed":14,
-		"point_aligned":false,
-		"point_req":0,
+		"point1_aligned":false,
+		"nearest_point2":false,
+		"score_req":0,
+		"limit":0,
 	},
 	{
 		"prefab":preload("res://Enemies/enemy4.tscn"),
 		"speed":14,
-		"point_aligned":true,
-		"point_req":60,
+		"point1_aligned":true,
+		"nearest_point2":false,
+		"score_req":60,
+		"limit":2,
 	},
 	{
 		"prefab":preload("res://Enemies/enemy5.tscn"),
 		"speed":14,
-		"point_aligned":false,
-		"point_req":80,
+		"point1_aligned":false,
+		"nearest_point2":false,
+		"score_req":80,
+		"limit":-1,
 	},
 	{
 		"prefab":preload("res://Enemies/enemy6.tscn"),
 		"speed":20,
-		"point_aligned":false,
-		"point_req":150,
+		"point1_aligned":false,
+		"nearest_point2":false,
+		"score_req":150,
+		"limit":1,
+	},
+	{
+		"prefab":preload("res://Enemies/enemy7.tscn"),
+		"speed":20,
+		"point1_aligned":false,
+		"nearest_point2":true,
+		"score_req":160,
+		"limit":1,
 	},
 ]
-const point_req=false##False just for testing
+const score_req=false##False just for testing
 var enemiesInstances=[]
 @onready var rng=RandomNumberGenerator.new()
 
@@ -49,6 +69,17 @@ var boundary_rect
 const DISTANCE_FROM_BOUNDARIES=20
 
 func _ready():
+#	enemyPrefabs=[
+#		{
+#			"prefab":preload("res://Enemies/enemy7.tscn"),
+#			"speed":20,
+#			"point1_aligned":false,
+#			"nearest_point2":true,
+#			"score_req":160,
+#			"limit":1,
+#		},
+#	]
+#	enemiesTimerMinMax=Vector2(0.1,0.1)
 	reset_timer()
 	var boundary_rect_area = Game.World_node.get_node("BoundaryRectArea")
 	var boundary_position = boundary_rect_area.global_position
@@ -64,33 +95,42 @@ func _process(_delta):
 func _on_enemies_timer_timeout():
 	var enemyChoices=enemyPrefabs.duplicate()
 	enemyChoices.shuffle()
-#	while(enemyChoices[0]["point_req"]>Game.score and point_req):
-#		enemyChoices.shuffle()
 	for enemy in enemyChoices:
-		if(enemy["point_req"]>Game.score and point_req):
+		var enemyname=enemy["prefab"].resource_path.split("Enemies/")[1].split(".tscn")[0]
+		var enemylength=Utils.find_nodes_with_string(self,enemyname).size()
+		var enemyMaxLength=enemy["limit"]
+		if((enemy["score_req"]>Game.score and score_req) or (enemylength>=enemyMaxLength and enemyMaxLength!=0)):
 			enemyChoices.erase(enemy)
-	var enemyChoice=enemyChoices[0]
-	
-	var enemyInstance=enemyChoice["prefab"].instantiate()
-	add_child(enemyInstance)
-	enemyInstance.name=enemyChoice["prefab"].resource_path.split("Enemies/")[1].split("tscn")[0]
-	var point1=generate_random_enemy_position()
-	if(enemyChoice["point_aligned"]):
-		var point1id=generate_random_enemy4_pointid()
-		point1=generate_random_enemy4_position(point1id)
-		enemyInstance.set_point_rot(point1id)
-	var point2=Game.World_node.pointpositions[0]
-	enemyInstance.position=point1
-	enemyInstance.point1=point1
-	enemyInstance.point2=point2
-	enemyInstance.speed=enemyChoice["speed"]
-	enemiesInstances.append(enemyInstance)
+	if(enemyChoices.size()>0):
+		var enemyChoice=enemyChoices[0]
+		
+		var enemyInstance=enemyChoice["prefab"].instantiate()
+		add_child(enemyInstance)
+		enemyInstance.name=enemyChoice["prefab"].resource_path.split("Enemies/")[1].split("tscn")[0]
+		var point1_edgeid=generate_random_enemy_edgeid()
+		var point1=generate_random_enemy_edgepos(point1_edgeid)
+		if(enemyChoice["point1_aligned"]):
+			var point1id=generate_random_enemy4_pointid()
+			point1=generate_random_enemy4_position(point1id)
+			enemyInstance.set_point_rot(point1id)
+		var point2=Game.World_node.pointpositions[0]
+		if(enemyChoice["nearest_point2"]):
+			point2=Game.World_node.pointpositions[point1_edgeid]
+			enemyInstance.point1start_id=point1_edgeid
+		enemyInstance.position=point1
+		enemyInstance.point1=point1
+		enemyInstance.point2=point2
+		enemyInstance.speed=enemyChoice["speed"]
+		enemiesInstances.append(enemyInstance)
+	else:
+		print("enemyChoices length is 0!")
 	reset_timer()
 
-func generate_random_enemy_position() -> Vector2:
-	var enemy_position = Vector2.ZERO
+func generate_random_enemy_edgeid()->int:
+	return 1+randi() % 4 # (0: top, 1: right, 2: bottom, 3: left)
 
-	var edge = 1+randi() % 4  # Randomly choose an edge (0: top, 1: right, 2: bottom, 3: left)
+func generate_random_enemy_edgepos(edge) -> Vector2:
+	var enemy_position = Vector2.ZERO
 
 	match edge:
 		1:  # Top edge

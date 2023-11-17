@@ -11,6 +11,8 @@ var isgameover:bool=false
 var scoreMultiplier:int=1
 const scoreForDiamond:int=5
 const scoreCollectable:int=1
+const scoreCollectableEnemy:int=2
+#const scoreCollectableMultiplied:bool=false
 const scoreNearMiss:int=1
 const scoreMultiplierMax:int=5
 
@@ -31,11 +33,14 @@ func _process(delta):
 		scoreMultiplierTimer=scoreMultiplierMaxTimer
 	
 	if(Input.is_key_pressed(KEY_F11)):
-		var current_mode = DisplayServer.window_get_mode()
-		if current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-		else:
-			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		#get_tree().paused = true
+		if(get_tree().paused):
+			var current_mode = DisplayServer.window_get_mode()
+			if current_mode == DisplayServer.WINDOW_MODE_FULLSCREEN:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			else:
+				DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		#get_tree().paused = false
 			
 	reload_references()
 
@@ -61,15 +66,20 @@ func decay_multiplier(delta):
 			if(scoreMultiplier==scoreMultiplierMax):
 				scoreMultiplier-=1
 
-func add_score(amnt):
-	amnt*=scoreMultiplier
+func add_score(amnt,multiplied=true):
+	if(multiplied):
+		amnt*=scoreMultiplier
 	score+=amnt
 
-func score_popup(amnt):
-	UI_node.score_popup(amnt*scoreMultiplier)
+func score_popup(amnt,multiplied=true):
+	if(multiplied):
+		amnt*=scoreMultiplier
+	UI_node.score_popup(amnt)
 	
-func score_popup_new(amnt,pos,size=1):
-	UI_node.score_popup_new(amnt*scoreMultiplier,pos,size)
+func score_popup_new(amnt,pos,size=1,multiplied=true):
+	if(multiplied):
+		amnt*=scoreMultiplier
+	UI_node.score_popup_new(amnt,pos,size)
 	
 func game_over():
 	isgameover=true

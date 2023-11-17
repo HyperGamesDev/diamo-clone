@@ -8,7 +8,6 @@ var point2=Vector2(0,0)
 var nearmissed=false
 var nearmissed_complete=false
 
-#const time_to_decay=5.0
 
 func _ready():
 	point2=Game.World_node.pointpositions[0]##The middle
@@ -22,7 +21,6 @@ func _process(delta):
 		position += direction * speed * delta * 5
 	else:
 		if($DecayTimer.is_stopped()):
-			print("DecayTimer started")
 			$DecayTimer.start()
 	
 	if(abs(position.x)>500 or abs(position.y)>500):
@@ -43,7 +41,6 @@ func _process(delta):
 func _on_area_entered(area):
 	if(area.name=="Player"):
 		area.die()
-		#self.die()
 
 func die():
 	self.queue_free()
